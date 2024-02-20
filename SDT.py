@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import numpy as np
 
 
 class SDT(nn.Module):
@@ -37,6 +38,7 @@ class SDT(nn.Module):
         self.depth = depth
         self.lamda = lamda
         self.device = torch.device("cuda" if use_cuda else "cpu")
+        self.path = []
 
         self._validate_parameters()
 
@@ -53,6 +55,8 @@ class SDT(nn.Module):
 
         self.leaf_nodes = nn.Linear(
             self.leaf_node_num_, self.output_dim, bias=False)
+    def path(self):
+        return self.path()
 
     def forward(self, X: torch.Tensor, is_training_data: bool = False) -> torch.Tensor:
         """
@@ -112,7 +116,7 @@ class SDT(nn.Module):
 
         # At this point I do have decision paths working and the correct
         # algorithm to get it visualized
-
+        self.path.append(decision_paths)
         mu = _mu.view(batch_size, self.leaf_node_num_)
         return mu, _penalty
 
