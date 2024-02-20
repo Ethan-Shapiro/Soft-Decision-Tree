@@ -76,6 +76,7 @@ def train_and_evaluate(args):
                 output = tree(data, is_training_data=False)
                 pred = output.argmax(dim=1, keepdim=True)
                 target_indices = target.argmax(dim=1, keepdim=True)
+
                 correct += pred.eq(target_indices).sum().item()
 
         accuracy = 100. * correct / len(val_loader.dataset)
@@ -130,7 +131,7 @@ if __name__ == "__main__":
                         default=5e-4, help='Weight decay.')
     parser.add_argument('--batch_size', type=int, default=128,
                         help='Batch size for training.')
-    parser.add_argument('--epochs', type=int, default=2,
+    parser.add_argument('--epochs', type=int, default=1,
                         help='Number of epochs to train.')
     parser.add_argument('--early_stopping_patience', type=int, default=3,
                         help='Number of times to wait before early stopping')

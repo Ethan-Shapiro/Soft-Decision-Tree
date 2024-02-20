@@ -67,7 +67,6 @@ class SDT(nn.Module):
         """
         _mu, _penalty = self._forward(X)
         y_pred = self.leaf_nodes(_mu)
-
         if is_training_data:
             return y_pred, _penalty
         else:
@@ -95,13 +94,24 @@ class SDT(nn.Module):
 
         begin_idx = 0
         end_idx = 1
+
+        # To store the decision path for each instance in the batch
+        decision_paths = [[] for _ in range(batch_size)]
+
         for layer_idx in range(self.depth):
             _path_prob = path_prob[:, begin_idx:end_idx, :]
             _penalty += self._cal_penalty(layer_idx, _mu, _path_prob)
             _mu = _mu.view(batch_size, -1, 1).repeat(1, 1, 2) * _path_prob
 
+            for batch_idx in range(batch_size):
+                direction = _path_prob[batch_idx].argmax(dim=1)
+                decision_paths[batch_idx].append(direction)
+
             begin_idx = end_idx
             end_idx = begin_idx + 2 ** (layer_idx + 1)
+
+        # At this point I do have decision paths working and the correct
+        # algorithm to get it visualized
 
         mu = _mu.view(batch_size, self.leaf_node_num_)
         return mu, _penalty
