@@ -1,0 +1,1 @@
+python train_sdt.py --dataset CELEBA --feature_idx 29 --epochs 150 --save_model_path celeba_29_rosy_cheeks.pth --use_cuda

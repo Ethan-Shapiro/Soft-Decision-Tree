@@ -142,6 +142,7 @@ def get_celeba(feature_idx: int, data_dir: str, batch_size: int, num_train: int 
 
 def download_mnist(data_dir):
     """Download the MNIST dataset if not already available."""
+    print("Downloading MNIST")
     datasets.MNIST(root=data_dir, train=True, download=True)
     datasets.MNIST(root=data_dir, train=False, download=True)
     print("Downloaded MNIST dataset.")
