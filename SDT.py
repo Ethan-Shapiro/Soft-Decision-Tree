@@ -76,7 +76,7 @@ class SDT(nn.Module):
         else:
             return y_pred
 
-    def _forward(self, X: torch.Tensor) -> torch.Tensor:
+    def _forward(self, X: torch.Tensor, is_decision_pth = False) -> torch.Tensor:
         """
         Core implementation of the model's forward pass.
 
@@ -118,7 +118,14 @@ class SDT(nn.Module):
         # algorithm to get it visualized
         self.path.append(decision_paths)
         mu = _mu.view(batch_size, self.leaf_node_num_)
-        return mu, _penalty
+
+        if not is_decision_pth:
+            return mu, _penalty
+        else:
+            return decision_paths
+
+
+
 
     def _cal_penalty(self, layer_idx: int, _mu: torch.Tensor, _path_prob: torch.Tensor) -> torch.Tensor:
         """

@@ -1,10 +1,12 @@
 import argparse
+import os
+
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
+
 from SDT import SDT
-import os
 from dataset import get_mnist, get_celeba, get_stl_star
+from path_viz import extract_path_from_tensors, plot_complete_tree_with_decision_path
 
 
 def train_and_evaluate(args):
@@ -85,7 +87,15 @@ def train_and_evaluate(args):
 
         print(f'\nVal set: Epoch: {epoch} Accuracy: {correct}/{len(val_loader.dataset)} '
               f'({accuracy:.0f}%) Best: {best_testing_acc:.0f}%\n')
-    # Evaluation
+
+    # Tree a Single Path
+    path = tree.path
+    print(f"path from our tree \n {path[0][0]}")
+    path = extract_path_from_tensors(path[0][0])
+    print(f"path from our tensor \n {path}")
+    plot_complete_tree_with_decision_path(path)
+
+    # Evaluation\
     tree.eval()
     correct = 0
     with torch.no_grad():

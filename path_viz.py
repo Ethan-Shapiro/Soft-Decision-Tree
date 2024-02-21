@@ -23,24 +23,24 @@ def extract_path_from_tensors(tensor_list):
             path.append(decisions[node_index].item())
         else:
             break  # If we're out of bounds, exit the loop
-
+    path = [[i] for i in path]
     return path
 
 
 # Example tensor array
 # This is the format decision_path is in
 # So passing it is easy, the issue is just how many and which ones
-tensor_array = [
-    torch.tensor([1]),
-    torch.tensor([1, 1]),
-    torch.tensor([1, 0, 0, 1]),
-    torch.tensor([0, 0, 0, 0, 0, 0, 1, 0]),
-    torch.tensor([0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1])
-]
-
-path = extract_path_from_tensors(tensor_array)
-path = [[i] for i in path]
-print("Extracted Path:", path)
+# tensor_array = [
+#     torch.tensor([1]),
+#     torch.tensor([1, 1]),
+#     torch.tensor([1, 0, 0, 1]),
+#     torch.tensor([0, 0, 0, 0, 0, 0, 1, 0]),
+#     torch.tensor([0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1])
+# ]
+#
+# path = extract_path_from_tensors(tensor_array)
+# path = [[i] for i in path]
+# print("Extracted Path:", path)
 
 
 def plot_complete_tree_with_decision_path(decision_path):
@@ -100,6 +100,6 @@ def plot_complete_tree_with_decision_path(decision_path):
 
 # Example decision path structure
 # Assuming each sublist represents the decision taken at each level (0 for left, 1 for right)
-plot_complete_tree_with_decision_path(path)
+# plot_complete_tree_with_decision_path(path)
 
 # [0], [1, 1], [[1, 0], [1, 0]], [[[0, 1], [0, 0]], [[0, 1], [1, 0]]]
